@@ -2,7 +2,7 @@
 Author: Guowen Liu
 Date: 2022-04-04 23:10:47
 LastEditors: Guowen Liu
-LastEditTime: 2022-04-04 23:15:02
+LastEditTime: 2022-04-04 23:22:59
 FilePath: \AI-Group-Project\src\main.py
 Description: 
 
@@ -36,18 +36,19 @@ def create_map():
              [Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
              [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
              [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
-             [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
-             [Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
+             [Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
+             [Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain],
              [Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
              [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
-             [Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
+             [Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain],
              [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
              [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
-             [Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
-             [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
-             [Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
-             [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain]
-             ]
+             [Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain],
+             [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain],
+             [Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain],
+             [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Plain, Terrain.Plain],
+             [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Plain, Terrain.Wall],
+             [Terrain.Plain, Terrain.Plain, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Wall, Terrain.Wall, Terrain.Plain, Terrain.Wall, Terrain.Wall]]
     return Map(spots)
 
 
@@ -56,7 +57,7 @@ def create_roles(map, heuristic):
     agent.move((0, 9))
     enemy = AStarEnemy(map, heuristic)
     #enemy = RandomRole()
-    enemy.move((20, 0))
+    enemy.move((24, 0))
     return agent, enemy
 
 
