@@ -2,7 +2,7 @@
 Author: Guowen Liu
 Date: 2022-04-04 23:10:47
 LastEditors: Guowen Liu
-LastEditTime: 2022-04-04 23:22:59
+LastEditTime: 2022-04-01 23:22:59
 FilePath: \AI-Group-Project\src\main.py
 Description: 
 
@@ -16,7 +16,7 @@ from pathlib import Path
 import pygame as pg
 from pygame.locals import *
 
-from role import RandomFlyRole, AStarEnemy, RandomRole, GeneticEnemy, StayRole
+from role import RandomFlyRole, AStarPolice, RandomRole, GeneticPolice, StayRole
 from map import Map, Terrain
 from status import Status
 from config import Config
@@ -53,13 +53,13 @@ def create_map():
 
 
 def create_roles(map, heuristic):
-    agent = RandomRole()
-    agent.move((0, 9))
-    #enemy = AStarEnemy(map, heuristic)
-    #enemy = RandomRole()
-    enemy = GeneticEnemy(map)
-    enemy.move((24, 0))
-    return agent, enemy
+    thief = RandomRole()
+    thief.move((0, 9))
+    #police = AStarPolice(map, heuristic)
+    #police = RandomRole()
+    police = GeneticPolice(map)
+    police.move((24, 0))
+    return thief, police
 
 
 def main():
@@ -70,11 +70,11 @@ def main():
     cfg.load(Path(__file__).parent.joinpath("config.json"))
 
     map = create_map()
-    agent, enemy = create_roles(map, cfg.heuristic)
+    thief, police = create_roles(map, cfg.heuristic)
     status = Status()
     status.map = map
-    status.agent = agent
-    status.enemy = enemy
+    status.thief = thief
+    status.police = police
 
     displayer = Displayer(map, status, cfg.fps)
 
@@ -84,8 +84,8 @@ def main():
                 pg.quit()
                 sys.exit()
         if not status.game_end():
-            agent.move(agent.get_action(status).dest(agent.pos))
-            enemy.move(enemy.get_action(status).dest(enemy.pos))
+            thief.move(thief.get_action(status).dest(thief.pos))
+            police.move(police.get_action(status).dest(police.pos))
         displayer.update()
 
 

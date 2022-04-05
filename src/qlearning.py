@@ -7,7 +7,7 @@ from pathlib import Path
 from src.config import Config
 from src.displayer import Displayer
 from src.main import create_map
-from src.role import Role, RandomRole, StayRole, GeneticEnemy
+from src.role import Role, RandomRole, StayRole, GeneticPolice
 from src.role import Action
 
 import numpy as np
@@ -18,35 +18,35 @@ from src.status import Status
 
 
 def create_s_q_roles():
-    agent = StayRole()
-    agent.move((0, 0))
-    enemy = QLearningAgent(list(range(5)))
-    enemy.move((24, 0))
-    return agent, enemy
+    thief = StayRole()
+    thief.move((0, 0))
+    police = QLearningThief(list(range(5)))
+    police.move((24, 0))
+    return thief, police
 
 
 def create_r_r_roles():
-    agent = RandomRole()
-    agent.move((0, 0))
-    enemy = RandomRole()
-    enemy.move((24, 0))
-    return agent, enemy
+    thief = RandomRole()
+    thief.move((0, 0))
+    police = RandomRole()
+    police.move((24, 0))
+    return thief, police
 
 
 def create_q_g_roles(map):
-    agent = QLearningAgent(list(range(5)))
-    agent.move((0, 0))
-    enemy = GeneticEnemy(map)
-    enemy.move((24, 0))
-    return agent, enemy
+    thief = QLearningThief(list(range(5)))
+    thief.move((0, 0))
+    police = GeneticPolice(map)
+    police.move((24, 0))
+    return thief, police
 
 
 def create_q_r_roles():
-    agent = QLearningAgent(list(range(5)))
-    agent.move((0, 0))
-    enemy = RandomRole()
-    enemy.move((24, 0))
-    return agent, enemy
+    thief = QLearningThief(list(range(5)))
+    thief.move((0, 0))
+    police = RandomRole()
+    police.move((24, 0))
+    return thief, police
 
 
 class QLearning:
@@ -108,7 +108,7 @@ class _QLearningRole(Role):
         return self._q_learning
 
 
-class QLearningAgent(_QLearningRole):
+class QLearningThief(_QLearningRole):
     @property
     def pos(self):
         return self._pos
@@ -121,40 +121,40 @@ class QLearningAgent(_QLearningRole):
         return status.thief
 
 
-def execute_q(status, agent, enemy):
-    enemy_current_pos = status.enemy.pos
-    enemy.move(enemy.get_action(status).dest(enemy.pos))
-    enemy_next_pos = status.enemy.pos
+def execute_q(status, thief, police):
+    police_current_pos = status.police.pos
+    police.move(police.get_action(status).dest(police.pos))
+    police_next_pos = status.police.pos
 
-    agent_current_pos = status.agent.pos
-    agent_action = agent.get_action(status)
-    agent_next_pos = agent_action.dest(agent.pos)
-    if status.map.wall(agent_next_pos):
+    thief_current_pos = status.thief.pos
+    thief_action = thief.get_action(status)
+    thief_next_pos = thief_action.dest(thief.pos)
+    if status.map.wall(thief_next_pos):
         return 0
-    agent.move(agent_next_pos)
+    thief.move(thief_next_pos)
     # print(thief_next_pos)
-    reward = status.get_reward((agent_current_pos, agent_next_pos), (enemy_current_pos, enemy_next_pos))
-    agent.q_learning.learn(agent_current_pos, agent_action, reward, agent_next_pos)
-    status.agent.pos = agent_next_pos
+    reward = status.get_reward((thief_current_pos, thief_next_pos), (police_current_pos, police_next_pos))
+    thief.q_learning.learn(thief_current_pos, thief_action, reward, thief_next_pos)
+    status.thief.pos = thief_next_pos
     return reward
 
 
-def execute_s_q(status, agent, enemy):
-    enemy_current_pos = status.enemy.pos
-    enemy_action = enemy.get_action(status)
-    enemy_next_pos = enemy_action.dest(enemy.pos)
-    if status.map.wall(enemy_next_pos):
+def execute_s_q(status, thief, police):
+    police_current_pos = status.police.pos
+    police_action = police.get_action(status)
+    police_next_pos = police_action.dest(police.pos)
+    if status.map.wall(police_next_pos):
         return 0
-    enemy.move(enemy_next_pos)
-    reward = -status.get_reward(((0, 0), (0, 0)), (enemy_current_pos, enemy_next_pos))
-    enemy.q_learning.learn(enemy_current_pos, enemy_action, reward, enemy_next_pos)
-    status.enemy.pos = enemy_next_pos
+    police.move(police_next_pos)
+    reward = -status.get_reward(((0, 0), (0, 0)), (police_current_pos, police_next_pos))
+    police.q_learning.learn(police_current_pos, police_action, reward, police_next_pos)
+    status.police.pos = police_next_pos
     return reward
 
 
-def execute_r(status, agent, enemy):
-    agent.move(agent.get_action(status).dest(agent.pos))
-    enemy.move(enemy.get_action(status).dest(enemy.pos))
+def execute_r(status, thief, police):
+    thief.move(thief.get_action(status).dest(thief.pos))
+    police.move(police.get_action(status).dest(police.pos))
 
 def main():
     pg.init()
@@ -164,15 +164,15 @@ def main():
     cfg.load(Path(__file__).parent.joinpath("config.json"))
 
     map = create_map()
-    # agent, enemy = create_q_r_roles()
-    # agent, enemy = create_r_r_roles()
-    # agent, enemy = create_s_q_roles()
-    agent, enemy = create_q_g_roles(map)
+    # thief, police = create_q_r_roles()
+    # thief, police = create_r_r_roles()
+    # thief, police = create_s_q_roles()
+    thief, police = create_q_g_roles(map)
     score = 0
     status = Status()
     status.map = map
-    status.agent = agent
-    status.enemy = enemy
+    status.thief = thief
+    status.police = police
 
     displayer = Displayer(map, status, cfg.fps)
 
@@ -185,13 +185,13 @@ def main():
                 pg.quit()
                 sys.exit()
         if not status.game_end():
-            # reward = execute_q(status, agent, enemy)
+            # reward = execute_q(status, thief, police)
             # score = score + reward
             # print(score)
 
-            # execute_r(status, agent, enemy)
+            # execute_r(status, thief, police)
 
-            reward = execute_q(status, agent, enemy)
+            reward = execute_q(status, thief, police)
             score = score + reward
             print(score)
 

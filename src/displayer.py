@@ -18,8 +18,8 @@ class Displayer:
 
         res_path = Path(__file__).parent.joinpath("res")
         self._images = {
-            "agent": pg.image.load(str(res_path.joinpath("agent.png"))),
-            "enemy": pg.image.load(str(res_path.joinpath("enemy.png"))),
+            "thief": pg.image.load(str(res_path.joinpath("thief.png"))),
+            "police": pg.image.load(str(res_path.joinpath("police.png"))),
             "plain": pg.image.load(str(res_path.joinpath("plain.png"))),
             "wall": pg.image.load(str(res_path.joinpath("wall.png"))),
         }
@@ -44,8 +44,8 @@ class Displayer:
                 rect = pg.Rect((x * self._SPOT_WIDTH, y * self._SPOT_HEIGHT,
                                 self._SPOT_WIDTH, self._SPOT_HEIGHT))
                 map_surf.blit(self._ground_images[x][y], rect)
-                if self._status.agent.pos == (x, y):
-                    map_surf.blit(self._images["agent"], rect)
-                if self._status.enemy.pos == (x, y):
-                    map_surf.blit(self._images["enemy"], rect)
+                if self._status.thief.pos == (x, y):
+                    map_surf.blit(self._images["thief"], rect)
+                if self._status.police.pos == (x, y):
+                    map_surf.blit(self._images["police"], rect)
         self._window.blit(map_surf, map_surf.get_rect())

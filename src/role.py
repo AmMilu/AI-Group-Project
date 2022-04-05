@@ -116,9 +116,9 @@ class _AStarRole(Role):
         assert False
 
 
-class AStarEnemy(_AStarRole):
+class AStarPolice(_AStarRole):
     def _target(self, status):
-        return status.agent
+        return status.thief
 
 
 class GeneticRole(Role):
@@ -134,6 +134,6 @@ class GeneticRole(Role):
         assert False
 
 
-class GeneticEnemy(GeneticRole):
+class GeneticPolice(GeneticRole):
     def _target(self, status):
-        return status.agent
+        return status.thief

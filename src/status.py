@@ -11,18 +11,18 @@ def m_disdance(x, y):
 
 class Status:
     def __init__(self):
-        self.agent = None
-        self.enemy = None
+        self.thief = None
+        self.police = None
         self.map = None
 
     def game_end(self):
-        return self.agent.pos == self.enemy.pos
+        return self.thief.pos == self.police.pos
 
-    def get_reward(self, agent, enemy):
-        if self.map.wall(agent[1]):
+    def get_reward(self, thief, police):
+        if self.map.wall(thief[1]):
             reward = -100
         else:
-            old_distance = e_disdance(enemy[0], agent[0])
-            new_distance = e_disdance(enemy[1], agent[1])
+            old_distance = e_disdance(police[0], thief[0])
+            new_distance = e_disdance(police[1], thief[1])
             reward = new_distance - old_distance
         return reward
