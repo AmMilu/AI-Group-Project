@@ -16,7 +16,7 @@ from pathlib import Path
 import pygame as pg
 from pygame.locals import *
 
-from role import RandomFlyRole, AStarEnemy, RandomRole
+from role import RandomFlyRole, AStarEnemy, RandomRole, GeneticEnemy
 from map import Map, Terrain
 from status import Status
 from config import Config
@@ -55,8 +55,9 @@ def create_map():
 def create_roles(map, heuristic):
     agent = RandomFlyRole()
     agent.move((0, 9))
-    enemy = AStarEnemy(map, heuristic)
+    # enemy = AStarEnemy(map, heuristic)
     #enemy = RandomRole()
+    enemy = GeneticEnemy(map)
     enemy.move((24, 0))
     return agent, enemy
 

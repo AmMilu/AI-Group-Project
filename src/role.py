@@ -2,7 +2,7 @@ from enum import IntEnum
 from random import randint
 
 from search import AStar
-
+from genetic import Genetic
 
 class Action(IntEnum):
     Stay = 0
@@ -96,5 +96,22 @@ class _AStarRole(Role):
 
 
 class AStarEnemy(_AStarRole):
+    def _target(self, status):
+        return status.agent
+
+class GeneticRole(Role):
+    def __init__(self, map):
+        super().__init__()
+        self._genetic = Genetic(map)
+
+    def get_action(self, status):
+        path = self._genetic.find_path(self._pos, self._target(status).pos)
+        return Action.next(self._pos, path[1]) if len(path) > 1 else Action.Stay
+
+    def _target(self, status):
+        assert False
+
+
+class GeneticEnemy(GeneticRole):
     def _target(self, status):
         return status.agent
