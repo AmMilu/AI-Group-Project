@@ -86,7 +86,11 @@ def main():
         if not status.game_end():
             thief.move(thief.get_action(status).dest(thief.pos))
             police.move(police.get_action(status).dest(police.pos))
-        displayer.update()
+            status.new_step()
+            displayer.update()
+        else:
+            print(f"The game ended with {status.step} steps.")
+            break
 
 
 if __name__ == "__main__":

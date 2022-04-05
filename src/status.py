@@ -14,6 +14,7 @@ class Status:
         self.thief = None
         self.police = None
         self.map = None
+        self.step = 0
 
     def game_end(self):
         return self.thief.pos == self.police.pos
@@ -26,3 +27,6 @@ class Status:
             new_distance = e_disdance(police[1], thief[1])
             reward = new_distance - old_distance
         return reward
+
+    def new_step(self):
+        self.step += 1
