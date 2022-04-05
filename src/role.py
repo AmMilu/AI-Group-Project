@@ -4,6 +4,7 @@ from random import randint
 from search import AStar
 from genetic import Genetic
 
+
 class Action(IntEnum):
     Stay = 0
     Up = 1
@@ -38,7 +39,7 @@ class Action(IntEnum):
             vertical_action = Action.Up
         elif src[1] > dest[1]:
             vertical_action = Action.Down
-        
+
         if horizontal_action == Action.Stay:
             return vertical_action
         elif vertical_action == Action.Stay:
@@ -46,10 +47,24 @@ class Action(IntEnum):
         else:
             return [horizontal_action, vertical_action][randint(0, 1)]
 
+    @staticmethod
+    def next_(value):
+        if value == Action.Stay.value:
+            return Action.Stay
+        if value == Action.Up.value:
+            return Action.Up
+        if value == Action.Down.value:
+            return Action.Down
+        if value == Action.Left.value:
+            return Action.Left
+        if value == Action.Right.value:
+            return Action.Right
+
+
 class Role:
     def __init__(self):
         self._pos = None
-    
+
     def move(self, pos):
         self._pos = pos
 
@@ -80,10 +95,12 @@ class RandomFlyRole(Role):
                 actions.append(action)
         return actions[randint(0, len(actions) - 1)]
 
+
 class StayRole(Role):
-    
+
     def get_action(self, status):
         return Action.Stay
+
 
 class _AStarRole(Role):
     def __init__(self, map, heuristic):
@@ -94,7 +111,7 @@ class _AStarRole(Role):
     def get_action(self, status):
         path = self._a_star.find_path(self._pos, self._target(status).pos)
         return Action.next(self._pos, path[1]) if len(path) > 1 else Action.Stay
-    
+
     def _target(self, status):
         assert False
 
@@ -102,6 +119,7 @@ class _AStarRole(Role):
 class AStarEnemy(_AStarRole):
     def _target(self, status):
         return status.agent
+
 
 class GeneticRole(Role):
     def __init__(self, map):
