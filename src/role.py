@@ -80,6 +80,10 @@ class RandomFlyRole(Role):
                 actions.append(action)
         return actions[randint(0, len(actions) - 1)]
 
+class StayRole(Role):
+    
+    def get_action(self, status):
+        return Action.Stay
 
 class _AStarRole(Role):
     def __init__(self, map, heuristic):
