@@ -1,8 +1,13 @@
-from math import *
+import math
 
 
 def e_disdance(x, y):
-    return sqrt(sum(pow(a - b, 2) for a, b in zip(x, y)))
+    return math.sqrt(sum(pow(a - b, 2) for a, b in zip(x, y)))
+
+
+def m_disdance(x, y):
+    return sum(abs(a - b) for a, b in zip(x, y))
+
 
 class Status:
     def __init__(self):
