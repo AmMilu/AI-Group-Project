@@ -19,9 +19,9 @@ class Genetic:
         """
         self.routes = []
         if src == dest:
-            return [src,dest]
+            return [src, dest]
         elif dest in self._map.neighbors(src):
-            return [src,dest]
+            return [src, dest]
 
         # Generate the initial population
         for _ in range(self.num_population):
@@ -77,6 +77,7 @@ class Genetic:
             iteration += 1
         return best_route
 
+    # Convert direction to coordinate
     def direction_to_route(self, src, dir):
         route = []
         route.append(src)
@@ -96,6 +97,7 @@ class Genetic:
                 route.append(prev)
         return route
 
+    # Convert coordinate to direction
     def route_to_direction(self, route):
         # 1,2,3,4: left right up down
         dir = []
@@ -112,6 +114,7 @@ class Genetic:
                 dir.append(4)
         return dir
 
+    # Generate a 10-step route using coordinates
     def generate_random_route(self, src, dest, step, route):
         if src == dest:
             self.routes.append(route)
