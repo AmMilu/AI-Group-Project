@@ -16,7 +16,7 @@ from pathlib import Path
 import pygame as pg
 from pygame.locals import *
 
-from role import RandomFlyRole, AStarPolice, RandomRole, GeneticPolice, StayRole
+from role import RandomFlyRole, AStarPolice, RandomRole, GeneticPolice, StayRole, GeneticThief
 from map import Map, Terrain
 from status import Status
 from config import Config
@@ -53,9 +53,10 @@ def create_map():
 
 
 def create_roles(map, heuristic):
-    thief = RandomRole()
+    # thief = RandomRole()
+    thief = GeneticThief(map)
     thief.move((0, 9))
-    #police = AStarPolice(map, heuristic)
+    # police = AStarPolice(map, heuristic)
     #police = RandomRole()
     police = GeneticPolice(map)
     police.move((24, 0))

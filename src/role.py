@@ -3,6 +3,7 @@ from random import randint
 
 from search import AStar
 from genetic import Genetic
+from genetic_thief import Genetic_
 
 
 class Action(IntEnum):
@@ -137,3 +138,20 @@ class GeneticRole(Role):
 class GeneticPolice(GeneticRole):
     def _target(self, status):
         return status.thief
+
+
+class GeneticThiefRole(Role):
+    def __init__(self, map):
+        super().__init__()
+        self._genetic = Genetic_(map)
+
+    def get_action(self, status):
+        path = self._genetic.find_path(self._pos, self._target(status).pos)
+        return Action.next(self._pos, path[1]) if len(path) > 1 else Action.Stay
+
+    def _target(self, status):
+        assert False
+
+class GeneticThief(GeneticThiefRole):
+    def _target(self, status):
+        return status.police
