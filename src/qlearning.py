@@ -6,7 +6,7 @@ from pathlib import Path
 
 from src.config import Config
 from src.displayer import Displayer
-from src.main import create_map
+from src.map import create_map
 from src.role import Role, RandomRole, StayRole, GeneticPolice
 from src.role import Action
 
@@ -36,7 +36,7 @@ def create_r_r_roles():
 def create_q_g_roles(map):
     thief = QLearningThief(list(range(5)))
     thief.move((0, 0))
-    police = GeneticPolice(map)
+    police = GeneticPolice(map,num_iteration=100, mutation_rate=0.3)
     police.move((24, 0))
     return thief, police
 
@@ -138,21 +138,6 @@ def execute_q(status, thief, police):
     status.thief.pos = thief_next_pos
     return reward
 
-
-<<<<<<< HEAD
-def execute_s_q(status, enemy):
-    enemy_current_pos = status.enemy.pos
-    enemy_action = enemy.get_action(status)
-    enemy_next_pos = enemy_action.dest(enemy.pos)
-
-    if not status.map.valid(enemy_next_pos) or status.map.wall(enemy_next_pos):
-        return 0
-    enemy.move(enemy_next_pos)
-    print(enemy_next_pos)
-    reward = -status.get_reward(((0, 0), (0, 0)), (enemy_current_pos, enemy_next_pos))
-    enemy.q_learning.learn(enemy_current_pos, enemy_action, reward, enemy_next_pos)
-    status.enemy.pos = enemy_next_pos
-=======
 def execute_s_q(status, thief, police):
     police_current_pos = status.police.pos
     police_action = police.get_action(status)
@@ -163,7 +148,6 @@ def execute_s_q(status, thief, police):
     reward = -status.get_reward(((0, 0), (0, 0)), (police_current_pos, police_next_pos))
     police.q_learning.learn(police_current_pos, police_action, reward, police_next_pos)
     status.police.pos = police_next_pos
->>>>>>> c81039df4fa0782f1070b1fa6beb05fd5796d5c7
     return reward
 
 
@@ -178,18 +162,11 @@ def main():
     cfg = Config()
     cfg.load(Path(__file__).parent.joinpath("config.json"))
 
-    map = create_map()
-<<<<<<< HEAD
-    agent, enemy = create_q_r_roles()
-    # agent, enemy = create_r_r_roles()
-    # agent, enemy = create_s_q_roles()
-    # agent, enemy = create_q_g_roles(map)
-=======
+    map = create_map("senior")
     # thief, police = create_q_r_roles()
     # thief, police = create_r_r_roles()
     # thief, police = create_s_q_roles()
     thief, police = create_q_g_roles(map)
->>>>>>> c81039df4fa0782f1070b1fa6beb05fd5796d5c7
     score = 0
     status = Status()
     status.map = map
@@ -207,9 +184,6 @@ def main():
                 pg.quit()
                 sys.exit()
         if not status.game_end():
-<<<<<<< HEAD
-            reward = execute_q(status, agent, enemy)
-=======
             # reward = execute_q(status, thief, police)
             # score = score + reward
             # print(score)
@@ -217,7 +191,6 @@ def main():
             # execute_r(status, thief, police)
 
             reward = execute_q(status, thief, police)
->>>>>>> c81039df4fa0782f1070b1fa6beb05fd5796d5c7
             score = score + reward
             print(score)
 
@@ -226,7 +199,6 @@ def main():
             # reward = execute_s_q(status, enemy)
             # score = score + reward
             # print(score)
-
         displayer.update()
 
 
