@@ -15,6 +15,7 @@ class Genetic_:
         self.actions = []
         self.num_population = 20
         self.num_iteration = 25  # could change, depend on running time
+        self.mutation_rate = 0.2 # chould change
 
     def clear_visited(self):
         self.is_visited = [[0] * self._map.height for _ in range(self._map.width)]
@@ -188,7 +189,7 @@ class Genetic_:
     def mutation(self, actions):
         for action in actions:
             # print("original action: "+str(action))
-            mutation_count = random.randint(0, len(action) - 2)
+            mutation_count = math.floor(len(action) * self.mutation_rate)
             mutation_point = []
             for n in range(mutation_count):
                 mutation_point.append(random.randint(0, len(action) - 1))
