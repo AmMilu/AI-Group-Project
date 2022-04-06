@@ -139,13 +139,15 @@ def execute_q(status, agent, enemy):
     return reward
 
 
-def execute_s_q(status, agent, enemy):
+def execute_s_q(status, enemy):
     enemy_current_pos = status.enemy.pos
     enemy_action = enemy.get_action(status)
     enemy_next_pos = enemy_action.dest(enemy.pos)
-    if status.map.wall(enemy_next_pos):
+
+    if not status.map.valid(enemy_next_pos) or status.map.wall(enemy_next_pos):
         return 0
     enemy.move(enemy_next_pos)
+    print(enemy_next_pos)
     reward = -status.get_reward(((0, 0), (0, 0)), (enemy_current_pos, enemy_next_pos))
     enemy.q_learning.learn(enemy_current_pos, enemy_action, reward, enemy_next_pos)
     status.enemy.pos = enemy_next_pos
@@ -164,10 +166,10 @@ def main():
     cfg.load(Path(__file__).parent.joinpath("config.json"))
 
     map = create_map()
-    # agent, enemy = create_q_r_roles()
+    agent, enemy = create_q_r_roles()
     # agent, enemy = create_r_r_roles()
     # agent, enemy = create_s_q_roles()
-    agent, enemy = create_q_g_roles(map)
+    # agent, enemy = create_q_g_roles(map)
     score = 0
     status = Status()
     status.map = map
@@ -185,15 +187,15 @@ def main():
                 pg.quit()
                 sys.exit()
         if not status.game_end():
-            # reward = execute_q(status, agent, enemy)
-            # score = score + reward
-            # print(score)
-
-            # execute_r(status, agent, enemy)
-
             reward = execute_q(status, agent, enemy)
             score = score + reward
             print(score)
+
+            # execute_r(status, agent, enemy)
+
+            # reward = execute_s_q(status, enemy)
+            # score = score + reward
+            # print(score)
 
         displayer.update()
 

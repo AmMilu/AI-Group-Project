@@ -10,6 +10,7 @@ Copyright (c) 2022 by Guowen Liu, All Rights Reserved.
 '''
 import logging
 import sys
+import time
 from random import randint
 from pathlib import Path
 
@@ -75,12 +76,15 @@ def main():
     status.map = map
     status.agent = agent
     status.enemy = enemy
+    start_time = time.time()
 
     displayer = Displayer(map, status, cfg.fps)
 
     while True:
         for event in pg.event.get():
             if event.type == QUIT:
+                end_time = time.time()
+                print(end_time-start_time)
                 pg.quit()
                 sys.exit()
         if not status.game_end():
