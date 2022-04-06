@@ -3,6 +3,7 @@ from random import randint
 
 from search import AStar
 from genetic import Genetic
+from genetic_thief import Genetic_
 
 
 class Action(IntEnum):
@@ -116,15 +117,15 @@ class _AStarRole(Role):
         assert False
 
 
-class AStarEnemy(_AStarRole):
+class AStarPolice(_AStarRole):
     def _target(self, status):
-        return status.agent
+        return status.thief
 
 
 class GeneticRole(Role):
-    def __init__(self, map):
+    def __init__(self, map, num_iteration, mutation_rate):
         super().__init__()
-        self._genetic = Genetic(map)
+        self._genetic = Genetic(map, num_iteration, mutation_rate)
 
     def get_action(self, status):
         path = self._genetic.find_path(self._pos, self._target(status).pos)
@@ -134,6 +135,23 @@ class GeneticRole(Role):
         assert False
 
 
-class GeneticEnemy(GeneticRole):
+class GeneticPolice(GeneticRole):
     def _target(self, status):
-        return status.agent
+        return status.thief
+
+
+class GeneticThiefRole(Role):
+    def __init__(self, map, num_iteration, mutation_rate):
+        super().__init__()
+        self._genetic = Genetic_(map, num_iteration, mutation_rate)
+
+    def get_action(self, status):
+        path = self._genetic.find_path(self._pos, self._target(status).pos)
+        return Action.next(self._pos, path[1]) if len(path) > 1 else Action.Stay
+
+    def _target(self, status):
+        assert False
+
+class GeneticThief(GeneticThiefRole):
+    def _target(self, status):
+        return status.police
