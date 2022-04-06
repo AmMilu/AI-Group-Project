@@ -123,9 +123,9 @@ class AStarPolice(_AStarRole):
 
 
 class GeneticRole(Role):
-    def __init__(self, map):
+    def __init__(self, map, num_iteration, mutation_rate):
         super().__init__()
-        self._genetic = Genetic(map)
+        self._genetic = Genetic(map, num_iteration, mutation_rate)
 
     def get_action(self, status):
         path = self._genetic.find_path(self._pos, self._target(status).pos)
@@ -141,9 +141,9 @@ class GeneticPolice(GeneticRole):
 
 
 class GeneticThiefRole(Role):
-    def __init__(self, map):
+    def __init__(self, map, num_iteration, mutation_rate):
         super().__init__()
-        self._genetic = Genetic_(map)
+        self._genetic = Genetic_(map, num_iteration, mutation_rate)
 
     def get_action(self, status):
         path = self._genetic.find_path(self._pos, self._target(status).pos)

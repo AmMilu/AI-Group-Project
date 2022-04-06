@@ -8,14 +8,14 @@ import math
 
 
 class Genetic_:
-    def __init__(self, map) -> None:
+    def __init__(self, map, num_iteration, mutation_rate) -> None:
         self._map = map  # MAY NEED UPDATE
         self.is_visited = [[0] * self._map.height for _ in range(self._map.width)]
         self.routes = []
         self.actions = []
         self.num_population = 20
-        self.num_iteration = 25  # could change, depend on running time
-        self.mutation_rate = 0.2 # chould change
+        self.num_iteration = num_iteration #100 # could change, depend on running time
+        self.mutation_rate = mutation_rate #0.3 # chould change
 
     def clear_visited(self):
         self.is_visited = [[0] * self._map.height for _ in range(self._map.width)]
