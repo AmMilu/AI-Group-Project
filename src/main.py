@@ -18,7 +18,7 @@ import pygame as pg
 from pygame.locals import *
 
 from role import RandomFlyRole, AStarPolice, RandomRole, GeneticPolice, StayRole, GeneticThief
-from map import Map, Terrain
+from map import Map, Terrain, create_map
 from status import Status
 from config import Config
 from displayer import Displayer
