@@ -172,26 +172,6 @@ def execute_r_g(status, thief, police):
     status.new_step()
 
 
-def pgame_init():
-    pg.init()
-    pg.display.set_caption("Chase AI")
-
-    cfg = Config()
-    cfg.load(Path(__file__).parent.joinpath("config.json"))
-
-    map = create_map("senior")
-    # thief, police = create_q_r_roles()
-    # thief, police = create_r_r_roles()
-    # thief, police = create_s_q_roles()
-    thief, police = create_q_g_roles(map)
-    status = Status()
-    status.map = map
-    status.thief = thief
-    status.police = police
-
-    displayer = Displayer(map, status, cfg.fps)
-
-
 def main():
     over_step = 0
     over_time = 0
