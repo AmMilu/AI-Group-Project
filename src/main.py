@@ -50,15 +50,15 @@ def create_roles(map, heuristic, num_iteration=100, mutation_rate=0.3):
 #    police.move((24, 0))
 #    return police
 
-def main():
+def main(map_size="senior",num_iteration=100, mutation_rate=0.3):
     pg.init()
     pg.display.set_caption("Chase AI")
 
     cfg = Config()
     cfg.load(Path(__file__).parent.joinpath("config.json"))
 
-    map = create_map()
-    thief, police = create_roles(map, cfg.heuristic)
+    map = create_map(map_size)
+    thief, police = create_roles(map, cfg.heuristic, num_iteration, mutation_rate)
     status = Status()
     status.map = map
     status.thief = thief
@@ -79,61 +79,27 @@ def main():
         else:
             print(f"The game ended with {status.step} steps.")
             break
+    return status.step
 
-def main_for_plot():
+def main_for_evaluation():
     average_step = []
-    average_time = []
     iteration = [5, 25, 50, 100, 250, 500] #100
     mutation_rate = [0, 0.1, 0.2, 0.3, 0.5, 0.7] #0.3
-    iter = 0
-    #for iter in range(len(iteration)):
-    for iter in range(len(mutation_rate)):
+    map_size = ["junior", "intermediate", "senior"]
+    #for iter in iteration:
+    #for iter in mutation_rate:
+    for size in map_size:
         step_list = []
         time_list = []
-        for i in range(5):
-            start = time.perf_counter()
-            pg.init()
-            pg.display.set_caption("Chase AI")
-
-            cfg = Config()
-            cfg.load(Path(__file__).parent.joinpath("config.json"))
-
-            map = create_map()
-            thief, police = create_roles(map, cfg.heuristic, num_iteration=100, mutation_rate=mutation_rate[iter])
-            #thief, police = create_roles(map, cfg.heuristic, num_iteration=iteration[iter], mutation_rate=0.3)
-            #thief = create_thief_role(map, num_iteration=100, mutation_rate=mutation_rate[iter])
-            #police = create_police_role(map, num_iteration=100, mutation_rate=0.3)
-            status = Status()
-            status.map = map
-            status.thief = thief
-            status.police = police
-
-            displayer = Displayer(map, status, cfg.fps)
-
-            while True:
-                for event in pg.event.get():
-                    if event.type == QUIT:
-                        pg.quit()
-                        sys.exit()
-                if not status.game_end():
-                    thief.move(thief.get_action(status).dest(thief.pos))
-                    police.move(police.get_action(status).dest(police.pos))
-                    status.new_step()
-                    displayer.update()
-                else:
-                    print(f"The game ended with {status.step} steps.")
-                    break
-            end = time.perf_counter()
-            step_list.append(status.step)
-            time_list.append(end - start)
+        for _ in range(20):
+            #step = main(num_iteration=100, mutation_rate=iter)
+            step = main(map_size=size)
+            step_list.append(step)
         average_step.append(sum(step_list)/len(step_list))
-        average_time.append(sum(time_list)/len(time_list))
     print(average_step)
-    print(average_time)
     #plt.plot(iteration, average_step, label="Average step")
-    #plt.plot(iteration, average_time, label="Average time")
     #plt.xlabel("Iteration")
-    #plt.ylabel("Steps/time(seconds)")
+    #plt.ylabel("Steps")
     #plt.title("Average step and time for different iteration of genetic algorithm")
     #plt.show()
 
@@ -142,8 +108,8 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
 
     try:
-        main()
-        #main_for_plot()
+        #main()
+        main_for_evaluation()
     except SystemExit:
         pass
     except BaseException as err:
