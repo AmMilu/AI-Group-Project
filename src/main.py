@@ -108,8 +108,8 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
 
     try:
-        #main()
-        main_for_evaluation()
+        main()
+        #main_for_evaluation()
     except SystemExit:
         pass
     except BaseException as err:
