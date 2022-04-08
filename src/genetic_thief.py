@@ -28,7 +28,20 @@ class Genetic_:
         if src == dest:
             return [src, dest]
         elif dest in self._map.neighbors(src):
-            return [src, dest]
+            neighbors_ = self._map.neighbors(src)
+            random.shuffle(neighbors_)
+            if len(neighbors_)==0:
+                return [src, src]
+            max_distance = 0
+            next_pos = []
+            for neighbor in neighbors_:
+                x = neighbor[0] - dest[0]
+                y = neighbor[1] - dest[1]
+                distance = math.sqrt(math.pow(x, 2) + math.pow(y, 2))
+                if distance > max_distance:
+                    max_distance = distance
+                    next_pos = neighbor
+            return [src, next_pos]
 
         # Generate the initial population
         for _ in range(self.num_population):
