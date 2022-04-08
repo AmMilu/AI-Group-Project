@@ -1,10 +1,15 @@
+"""
+-*- coding: utf-8 -*-
+@File  : qlearning_.py
+@Author: Yu
+@Date  : 08/04/2022
+@Software : PyCharm
+"""
+
 import logging
 import sys
-import time
 from collections import defaultdict
 from pathlib import Path
-
-import seaborn
 
 from src.config import Config
 from src.displayer import Displayer
@@ -224,9 +229,9 @@ def main():
         # thief, police = create_q_r_roles()
         # thief, police = create_s_q_roles()
         # thief, police = create_r_g_roles(map)
-        # thief, police = create_q_g_roles(map)
+        thief, police = create_q_g_roles(map)
         # thief, police = create_r_a_roles(map, cfg.heuristic)
-        thief, police = create_q_a_roles(map, cfg.heuristic)
+        # thief, police = create_q_a_roles(map, cfg.heuristic)
         status = Status()
         status.map = map
         status.step = 0
