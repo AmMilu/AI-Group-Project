@@ -30,7 +30,7 @@ class Genetic_:
         elif dest in self._map.neighbors(src):
             neighbors_ = self._map.neighbors(src)
             random.shuffle(neighbors_)
-            if len(neighbors_)==0:
+            if len(neighbors_)==1:
                 return [src, src]
             max_distance = 0
             next_pos = []
