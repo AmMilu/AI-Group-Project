@@ -119,11 +119,11 @@ class Genetic:
     def generate_random_route(self, src, dest, step, route):
         if src == dest:
             self.routes.append(route)
-            print(route)
+            #print(route)
             return True
         elif step == 10:
             self.routes.append(route)
-            print(route)
+            #print(route)
             return True
         neighbors_ = self._map.neighbors(src)
         random.shuffle(neighbors_)

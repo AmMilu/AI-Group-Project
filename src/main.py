@@ -2,16 +2,17 @@
 Author: Guowen Liu
 Date: 2022-04-04 23:10:47
 LastEditors: Guowen Liu
-LastEditTime: 2022-04-01 23:22:59
+LastEditTime: 2022-04-09 01:56:24
 FilePath: \AI-Group-Project\src\main.py
 Description: 
 
 Copyright (c) 2022 by Guowen Liu, All Rights Reserved. 
 '''
+from hashlib import algorithms_available
 import logging
 from re import A
 import sys
-from random import randint
+from random import randint, random
 from pathlib import Path
 
 import pygame as pg
@@ -26,13 +27,33 @@ from displayer import Displayer
 import time
 
 
-def create_roles(map, heuristic, num_iteration=100, mutation_rate=0.3):
-    # thief = RandomRole()
-    thief = GeneticThief(map, num_iteration, mutation_rate=0.7)
+def create_roles(police_algorithm,thief_algorithm,map, heuristic, num_iteration=100, mutation_rate=0.3):
+    #Police
+    if police_algorithm == "A*":
+        police = AStarPolice(map, heuristic)
+    elif police_algorithm == "genetic_police":
+        police =  GeneticPolice(map, num_iteration, mutation_rate)
+    elif police_algorithm == "qlearning_police":
+        pass
+        #police = qlearning_police()
+    elif police_algorithm == "stay":
+        police = StayRole()
+    elif police_algorithm == "randome":
+        police = RandomRole()
+    
+    #Thief
+    if thief_algorithm == "genetic_thief":
+        thief =  GeneticThief(map, num_iteration, mutation_rate)
+    elif thief_algorithm == "qlearning_thief":
+        pass
+        #thief = qlearning_thief()
+    elif thief_algorithm == "stay":
+        thief = StayRole()
+    elif thief_algorithm == "random":
+        thief = RandomRole()
+    
+
     thief.move((0,9))
-    # police = AStarPolice(map, heuristic)
-    #police = RandomRole()
-    police = GeneticPolice(map, num_iteration, mutation_rate)
     police.move((24, 0))
     return thief, police
 
@@ -50,15 +71,17 @@ def create_roles(map, heuristic, num_iteration=100, mutation_rate=0.3):
 #    police.move((24, 0))
 #    return police
 
-def main(map_size="senior",num_iteration=100, mutation_rate=0.3):
+def main(map_level,police_algorithm,thief_algorithm):
+    num_iteration=100
+    mutation_rate=0.3
     pg.init()
     pg.display.set_caption("Chase AI")
 
     cfg = Config()
     cfg.load(Path(__file__).parent.joinpath("config.json"))
 
-    map = create_map(map_size)
-    thief, police = create_roles(map, cfg.heuristic, num_iteration, mutation_rate)
+    map = create_map(map_level)
+    thief, police = create_roles(police_algorithm,thief_algorithm,map, cfg.heuristic, num_iteration, mutation_rate)
     status = Status()
     status.map = map
     status.thief = thief
@@ -80,6 +103,16 @@ def main(map_size="senior",num_iteration=100, mutation_rate=0.3):
             print(f"The game ended with {status.step} steps.")
             break
     return status.step
+def command_line ():
+    map_all_level = "junior intermediate senior"
+    all_police_algorithm = "A* genetic_police qlearning_police random stay"
+    all_thief_algorithm = "genetic_thief qlearning_thief random stay"
+    map_level,police_algorithm,thief_algorithm  = sys.argv[1:4]
+    if map_level in map_all_level and police_algorithm in all_police_algorithm and thief_algorithm in all_thief_algorithm:
+        main(map_level,police_algorithm,thief_algorithm)
+    else:
+        print("Wrong Parameters")
+    return 
 
 def main_for_evaluation():
     average_step = []
@@ -108,7 +141,8 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
 
     try:
-        main()
+        command_line()
+        #main()
         #main_for_evaluation()
     except SystemExit:
         pass

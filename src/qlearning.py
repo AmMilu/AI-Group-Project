@@ -177,7 +177,7 @@ def execute_s_q(status, police):
     police_action = police.get_action(status)
     police_next_pos = police_action.dest(police.pos)
 
-    print("action:", police_action)
+    #print("action:", police_action)
 
     if not status.map.valid(police_next_pos):
         return -100
@@ -255,17 +255,17 @@ def main():
                 reward = execute_q(status, thief, police, iteration)
                 # reward = execute_r_g(status, thief, police, iteration)
                 # reward = execute_s_q(status, police)
-                print(reward)
+                #print(reward)
 
                 displayer.update()
             else:
                 plot_q_table(status.map, status.thief)
-                print(f"The game ended with {status.step} steps.")
+                #print(f"The game ended with {status.step} steps.")
                 break
         # when use inherit q table
         record_q_table = thief.q_learning.q_table
         over_step = over_step + status.step
-    print(f"mean step: {over_step / eposides} ")
+    #print(f"mean step: {over_step / eposides} ")
 
 
 if __name__ == "__main__":
