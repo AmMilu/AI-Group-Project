@@ -101,6 +101,19 @@ class QLearningThief(_QLearningRole):
         return status.thief
 
 
+class QLearningPolice(_QLearningRole):
+    @property
+    def pos(self):
+        return self._pos
+
+    @pos.setter
+    def pos(self, value):
+        self._pos = value
+
+    def _target(self, status):
+        return status.thief
+
+
 def create_s_q_roles():
     thief = StayRole()
     thief.move((0, 9))
